@@ -213,8 +213,9 @@ function createRewardsPanel(transaction) {
     const rewardPanel = document.createElement('div');
     rewardPanel.classList.add('rewards-panel');
 
-    rewardPanel.innerHTML = `
-      <div class="rewards-info">
+rewardPanel.innerHTML = `
+  <div class="rewards-info">
+      <div class="rewards-left">
           <img src="${transaction.logo}" alt="${transaction.symbol}" class="rewards-logo">
           <div class="rewards-details">
               <div class="rewards-name-symbol">
@@ -223,11 +224,13 @@ function createRewardsPanel(transaction) {
               </div>
               <span class="rewards-amount">+$${transaction.amount}</span>
               <span class="rewards-text">Crypto account given for being a level ${transaction.level} investor.</span>
-              
           </div>
       </div>
-      <div class="rewards-level">Level ${transaction.level}</div>
-  `;
+      <div class="rewards-right">
+          <span class="rewards-level">Level ${transaction.level}</span>
+      </div>
+  </div>
+`;
 
     return rewardPanel;
 }
