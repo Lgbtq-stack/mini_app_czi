@@ -14,6 +14,69 @@ const localConfig = {
             logo: "https://example.com/eth-logo.png",
             price: 3000,
             amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
+        },
+        {
+            symbol: "ETH",
+            name: "Ethereum",
+            logo: "https://example.com/eth-logo.png",
+            price: 3000,
+            amount: 5.45
         }
     ],
     transaction: [
@@ -23,6 +86,55 @@ const localConfig = {
             name: "Bitcoin",
             amount: 150,
             level: 3
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
+        },
+        {
+            logo: "https://example.com/eth-logo.png",
+            symbol: "ETH",
+            name: "Ethereum",
+            amount: 200,
+            level: 5
         },
         {
             logo: "https://example.com/eth-logo.png",
@@ -58,6 +170,8 @@ function getConfig() {
 
 window.addEventListener("load", () => {
     document.body.classList.add("page-loaded");
+
+    window.scrollTo(0, 0);
 });
 
 function updateWalletInfo(walletAddress, tokens) {
@@ -108,6 +222,8 @@ function createRewardsPanel(transaction) {
                   <span class="rewards-name">${transaction.name}</span>
               </div>
               <span class="rewards-amount">+$${transaction.amount}</span>
+              <span class="rewards-text">Crypto account given for being a level ${transaction.level} investor.</span>
+              
           </div>
       </div>
       <div class="rewards-level">Level ${transaction.level}</div>
@@ -131,6 +247,7 @@ function toggleTab(activeTab) {
     activeTabContent.classList.add("active");
 
     if (activeTab === "rewards-tab") {
+
         config.transaction.forEach(transaction => {
             activeTabContent.appendChild(createRewardsPanel(transaction));
         });
@@ -158,12 +275,15 @@ tabButtons.forEach((button) => {
                 withdrawButton.style.display = "none";
 
                 setTimeout(() => {
+                window.scrollTo(0, 0);
+
                     currentTabContent.innerHTML = "";
                     toggleTab("rewards-tab");
 
                 }, 175);
             } else if (nextTab === "coins-tab") {
 
+                window.scrollTo(0, 0);
                 currentTabContent.classList.add("right");
 
                 const nextTabContent = document.querySelector(`#${nextTab}`);
@@ -204,7 +324,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// Копирование адреса кошелька в буфер обмена
 document.addEventListener("DOMContentLoaded", function () {
     const walletAddressElement = document.getElementById("wallet-address");
 
