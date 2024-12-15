@@ -10,8 +10,8 @@ const logo = {
 const token_name = {
     "USDC": "USD Coin",
     "BTC": "Bitcoin",
-    "XLM": "abc",
-    "XRP": "def",
+    "XLM": "Lumens",
+    "XRP": "Ripple",
 };
 
 const token_price = {
