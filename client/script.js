@@ -22,13 +22,14 @@ function getConfigFromURL() {
         }
     } else {
         console.error('No config parameter found in URL');
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
 }
 
 async function getConfig() {
-    let remoteConfig = getConfigFromURL();
-    // let remoteConfig = wallet_test_config;
+    // let remoteConfig = getConfigFromURL();
+    let remoteConfig = wallet_test_config;
 
     if(!remoteConfig.wallet || remoteConfig.wallet === "") {
         showPopup(`You don't have active wallet. ⚠️`, false);
@@ -40,7 +41,7 @@ async function getConfig() {
     let balance = all_balances[check_token];
     if (balance === undefined) {
         console.error('No balance found for check_token');
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
 
@@ -48,12 +49,12 @@ async function getConfig() {
     console.log("balance: ", balance);
 
     if (!remoteConfig.levels_config || Object.keys(remoteConfig.levels_config).length === 0) {
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
 
     if (!remoteConfig.version){
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
 
@@ -61,13 +62,13 @@ async function getConfig() {
         console.log('Config is up to date');
         return create_config(remoteConfig.wallet, balance, remoteConfig.levels_config, remoteConfig.version);
     } else if (remoteConfig.version < web_app_version) {
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     } else if (remoteConfig.version > web_app_version) {
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     } else {
-        showPopup("Please close your wallet and open it up again to get the your information UpToDate. 🛠", false);
+        showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
 
@@ -175,10 +176,13 @@ function toggleTab(activeTab) {
 
     const activeTabContent = document.querySelector(`#${activeTab}`);
     activeTabContent.classList.add("active");
+    activeTabContent.innerHTML = "";
 
     if (activeTab === "rewards-tab") {
 
-        config.transaction.forEach(transaction => {
+        const sortedTransactions = config.transaction.sort((a, b) => b.level - a.level);
+
+        sortedTransactions.forEach(transaction => {
             activeTabContent.appendChild(createRewardsPanel(transaction));
         });
     } else if (activeTab === "coins-tab") {
