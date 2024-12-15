@@ -2,6 +2,11 @@
     font-family: 'Seravek', sans-serif;
 }
 
+.hidden {
+    display: none;
+}
+
+
 body {
     margin: 0;
     background: #f0f0f0;
@@ -9,20 +14,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    opacity: 0;
-    transition: opacity 1s ease-in;
     overflow-x: hidden;
     overflow-y: auto;
-}
-
-body.page-loaded {
-    opacity: 1;
 }
 
 .wallet-container {
     max-width: 600px;
     width: 100%;
     /*min-height: 100vh; !* Растягивает контейнер на всю высоту экрана *!*/
+    opacity: 0;
+
 
     margin: 0 auto;
     overflow: visible;

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
 <div class="wallet-container">
     <div class="header">
         <div class="wallet-header">
@@ -55,11 +57,12 @@
 <!-- Popup для вывода информации -->
 <div id="popup" class="popup" style="display: none;">
     <div class="popup-content">
-        <p>You'll be able to withdraw your crypto account once we complete the CZI project.</p>
+        <p id="pop-message">You'll be able to withdraw your crypto account once we complete the CZI project.</p>
         <button id="close-popup" class="close-popup">Close</button>
     </div>
 </div>
 
-<script src="client/script.js"></script>
+
+<script type="module" src="client/script.js"></script>
 </body>
 </html>

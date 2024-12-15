@@ -1,0 +1,24 @@
+{
+  "name": "mini_app_czi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lgbtq-stack/mini_app_czi.git"
+  },
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@stellar/stellar-sdk": "^13.0.0",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "knex": "^3.1.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.2"
+  }
+}
