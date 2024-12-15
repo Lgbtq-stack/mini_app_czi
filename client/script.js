@@ -4,8 +4,6 @@ import {web_app_version} from "./Config.js";
 
 const check_token = "CZI:GAATAURKW525OLU4LE27QB5FSM4PQXDSTJ6YEG7E7E6GA2FCWORUSA6Y"
 
-const wallet_test_config = {'wallet': 'GB6Z2DZTMXHB7M6ETEXKGDRJCAUTDSIL6AZAHV6K4HEO6ZVH5H5TTVER', 'levels_config': {1: [0, 99], 2: [100, 999], 3: [1000, 4999], 4: [5000, 9999], 5: [10000, 24999], 6: [25000, 49999], 7: [50000, 99999], 8: [100000, 250000]}, 'version': 2}
-
 function getConfigFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const encodedConfig = urlParams.get('config');
@@ -28,7 +26,7 @@ function getConfigFromURL() {
 
 async function getConfig() {
     let remoteConfig = getConfigFromURL();
-    //remoteConfig = wallet_test_config;
+    // let remoteConfig = wallet_test_config;
 
     let all_balances = await getAccountBalance(remoteConfig.wallet);
 
@@ -249,22 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const walletAddressElement = document.getElementById("wallet-address");
 
-    walletAddressElement.addEventListener("click", function () {
-        const walletAddress = walletAddressElement.textContent;
-
-        const textarea = document.createElement("textarea");
-        textarea.value = walletAddress;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
-
-        alert("Wallet Address copied to clipboard!");
-    });
-});
 
 
 let config = null;
