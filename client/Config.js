@@ -1,1 +1,1 @@
-export const web_app_version = 2;
+export const web_app_version = 3;

@@ -5,6 +5,9 @@ const logo = {
     "BTC": "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
     "XLM": "https://cryptologos.cc/logos/stellar-xlm-logo.png",
     "XRP": "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+    "HBAR": "https://cryptologos.cc/logos/hedera-hashgraph-hbar-logo.png",
+    "ALGO": "https://cryptologos.cc/logos/algorand-algo-logo.png",
+    "IOTA": "https://cryptologos.cc/logos/iota-miota-logo.png",
 };
 
 const token_name = {
@@ -12,13 +15,19 @@ const token_name = {
     "BTC": "Bitcoin",
     "XLM": "Lumens",
     "XRP": "Ripple",
+    "HBAR": "Hedera Hashgraph",
+    "ALGO": "Algorand",
+    "IOTA": "IOTA",
 };
 
 const token_price = {
     "USDC": 1,
     "BTC": 100908,
     "XLM": 0.42,
-    "XRP": 2.40
+    "XRP": 2.40,
+    "HBAR": 0.28665,
+    "ALGO": 0.3479,
+    "IOTA": 0.293,
 };
 
 const token_bonus = {
@@ -59,7 +68,43 @@ const token_bonus = {
         8: 1280000,
         9: 2560000,
         10: 5120000
-    }
+    },
+    "HBAR": {  // level: amount
+        1: 10000,
+        2: 20000,
+        3: 40000,
+        4: 80000,
+        5: 160000,
+        6: 320000,
+        7: 640000,
+        8: 1280000,
+        9: 2560000,
+        10: 5120000
+    },
+    "ALGO": {  // level: amount
+        1: 10000,
+        2: 20000,
+        3: 40000,
+        4: 80000,
+        5: 160000,
+        6: 320000,
+        7: 640000,
+        8: 1280000,
+        9: 2560000,
+        10: 5120000
+    },
+    "IOTA": {  // level: amount
+        1: 10000,
+        2: 20000,
+        3: 40000,
+        4: 80000,
+        5: 160000,
+        6: 320000,
+        7: 640000,
+        8: 1280000,
+        9: 2560000,
+        10: 5120000
+    },
 };
 
 
