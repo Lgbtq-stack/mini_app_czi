@@ -28,6 +28,7 @@ function getConfigFromURL() {
     }
 }
 
+
 async function getConfig() {
     let remoteConfig = await get_config(getConfigFromURL());
     // let remoteConfig = wallet_test_config;
@@ -130,8 +131,8 @@ function createTokenPanel(token) {
         </div>
     </div>
     <div class="token-right">
-        <span class="token-quantity">${token.amount.toFixed(2)}</span>
-        <span class="token-total">~$${(token.price * token.amount).toFixed(2)}</span>
+        <span class="token-quantity">${token.amount.toFixed(7)}</span>
+        <span class="token-total">~$${(token.price * token.amount).toFixed(7)}</span>
     </div>`;
 
     return tokenPanel;
