@@ -262,9 +262,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-function round(number, precision) {
+function round(number, precision, fixedDecimals = 2) {
     const factor = 10 ** precision;
-    return Math.round(number * factor) / factor;
+    const rounded = Math.round(number * factor) / factor;
+    return rounded.toFixed(fixedDecimals);
 }
 
 
