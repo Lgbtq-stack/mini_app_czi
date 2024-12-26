@@ -112,7 +112,7 @@ function updateWalletInfo(walletAddress, tokens) {
         totalBalance += token.price * token.amount;
     });
 
-    document.getElementById("balance").textContent = `${totalBalance.toFixed(2)} USD`;
+    document.getElementById("balance").textContent = `${round(totalBalance,2)} USD`;
 }
 
 function createTokenPanel(token) {
@@ -127,12 +127,12 @@ function createTokenPanel(token) {
                 <span class="token-symbol">${token.symbol}</span>
                 <span class="token-name">${token.name}</span>
             </div>
-            <span class="token-price">$${token.price.toFixed(2)}</span>
+            <span class="token-price">$${round(token.price,2)}</span>
         </div>
     </div>
     <div class="token-right">
-        <span class="token-quantity">${token.amount.toFixed(7)}</span>
-        <span class="token-total">~$${(token.price * token.amount).toFixed(2)}</span>
+        <span class="token-quantity">${round(token.amount,7)}</span>
+        <span class="token-total">~$${round((token.price * token.amount),2)}</span>
     </div>`;
 
     return tokenPanel;
@@ -261,6 +261,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+function round(number, precision) {
+    const factor = 10 ** precision;
+    return Math.round(number * factor) / factor;
+}
 
 
 
