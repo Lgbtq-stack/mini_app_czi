@@ -132,7 +132,7 @@ function createTokenPanel(token) {
     </div>
     <div class="token-right">
         <span class="token-quantity">${token.amount.toFixed(7)}</span>
-        <span class="token-total">~$${(token.price * token.amount).toFixed(7)}</span>
+        <span class="token-total">~$${(token.price * token.amount).toFixed(2)}</span>
     </div>`;
 
     return tokenPanel;
