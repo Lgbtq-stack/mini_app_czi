@@ -24,7 +24,6 @@ body {
     /*min-height: 100vh; !* Растягивает контейнер на всю высоту экрана *!*/
     opacity: 0;
 
-
     margin: 0 auto;
     overflow: visible;
     background-color: #ffffff;
@@ -222,17 +221,19 @@ body {
 .main-content {
     background-color: #ffffff;
     flex-grow: 1;
+    z-index: 3;
 }
 
 .tabs {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
+    overflow: visible;
 }
 
 .tabs-content {
     /*flex-grow: 1;*/
-    overflow-y: auto;
+    overflow: visible;
     /*box-sizing: border-box;*/
     /*padding-bottom: 20px;*/
 }
@@ -251,13 +252,13 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 999;
+    z-index: 9999;
 }
 
 .tab-button.active {
     color: #5191f4;
     background-color: rgba(0, 0, 0, 0);
-    box-shadow: 0 -4px 3px #5191f4;
+    box-shadow: 0 -2px 3px #5191f4;
 }
 
 .tab-content {
@@ -365,10 +366,20 @@ body {
     border-radius: 4px;
 }
 
+.token-price-container {
+    display: flex;
+    align-items: flex-end;
+}
+
 .token-price {
-    font-size: 12px;
+    font-size: 14px;
     color: #8e8e8e;
-    margin-top: 6px;
+    margin: 6px 6px 0 0;
+}
+
+.price-arrow {
+    font-size: 14px;
+    margin: 6px 6px 0 0;
 }
 
 .token-right {
@@ -518,3 +529,14 @@ body {
     background-color: #396fc9;
 }
 
+.price-arrow.green {
+    color: green;
+}
+
+.price-arrow.red {
+    color: red;
+}
+
+.price-arrow.black {
+    color: black;
+}

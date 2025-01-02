@@ -1,11 +1,25 @@
 import {getAccountBalance} from "./stellar_helper.js";
-import {create_config} from "./config_builder.js";
+import {create_config, previous_price, token_price} from "./config_builder.js";
 import {web_app_version} from "./Config.js";
 import {get_config} from "../datacontoller.js";
 
+
 const check_token = "CZI:GAATAURKW525OLU4LE27QB5FSM4PQXDSTJ6YEG7E7E6GA2FCWORUSA6Y"
 
-// const wallet_test_config = {'wallet': 'GB6Z2DZTMXHB7M6ETEXKGDRJCAUTDSIL6AZAHV6K4HEO6ZVH5H5TTVER', 'levels_config': {1: [0, 99], 2: [100, 999], 3: [1000, 4999], 4: [5000, 9999], 5: [10000, 24999], 6: [25000, 49999], 7: [50000, 99999], 8: [100000, 250000]}, 'version': 2}
+const wallet_test_config = {
+    'wallet': 'GBQCR3L7H2QBCJNEI3CLBRCGQFSTGPEPRW3U2NPQRUJ66ZVQ7SECSUHQ',
+    'levels_config': {
+        1: [0, 99],
+        2: [100, 999],
+        3: [1000, 4999],
+        4: [5000, 9999],
+        5: [10000, 24999],
+        6: [25000, 49999],
+        7: [50000, 99999],
+        8: [100000, 250000]
+    },
+    'version': 3
+}
 
 function getConfigFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -33,7 +47,7 @@ async function getConfig() {
     let remoteConfig = await get_config(getConfigFromURL());
     // let remoteConfig = wallet_test_config;
 
-    if(!remoteConfig.wallet || remoteConfig.wallet === "") {
+    if (!remoteConfig.wallet || remoteConfig.wallet === "") {
         showPopup(`You don't have active wallet. ⚠️`, false);
         return null;
     }
@@ -55,7 +69,7 @@ async function getConfig() {
         return null;
     }
 
-    if (!remoteConfig.version){
+    if (!remoteConfig.version) {
         showPopup("Please close your wallet app and open it up again to get the your information UpToDate. 🛠", false);
         return null;
     }
@@ -112,11 +126,44 @@ function updateWalletInfo(walletAddress, tokens) {
         totalBalance += token.price * token.amount;
     });
 
-    document.getElementById("balance").textContent = `${round(totalBalance,2)} USD`;
+    document.getElementById("balance").textContent = `${round(totalBalance, 2)} USD`;
+}
+
+export function updateTokenPriceAndArrow({ symbol, price, arrow, percentageChange }) {
+    const priceElement = document.getElementById(`price-${symbol}`);
+    const arrowElement = document.getElementById(`arrow-${symbol}`);
+    const totalElement = document.getElementById(`total-${symbol}`);
+
+    if (priceElement && arrowElement) {
+        priceElement.innerHTML = `$${price.toFixed(2)}`;
+        arrowElement.innerHTML = `
+            <span class="price-arrow ${getArrowClass(arrow)}">
+                ${arrow} ${percentageChange.toFixed(2)}%
+            </span>
+        `;
+
+        const token = config.tokens.find(t => t.symbol === symbol);
+        if (token) {
+            const total = price * token.amount;
+            totalElement.innerHTML = `~$${total.toFixed(2)}`;
+        }
+    }
+}
+
+function getArrowClass(arrow) {
+    if (arrow === '▲') return 'green';
+    if (arrow === '▼') return 'red';
+    return 'black';
+}
+
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 function createTokenPanel(token) {
     const tokenPanel = document.createElement("div");
+    let randomValue = getRandom(0.01, 0.04);
+
     tokenPanel.classList.add("token-panel");
 
     tokenPanel.innerHTML = `
@@ -127,18 +174,22 @@ function createTokenPanel(token) {
                 <span class="token-symbol">${token.symbol}</span>
                 <span class="token-name">${token.name}</span>
             </div>
-            <span class="token-price">$${round(token.price,2)}</span>
+            <div class="token-price-container">
+                <span class="token-price" id="price-${token.symbol}">$${token.price.toFixed(3)}</span>
+                <span class="price-arrow ${getArrowClass(previous_price[token.symbol])}" id="arrow-${token.symbol}">
+                    ${previous_price[token.symbol] || '⧫'} ${token.price > 0 ? `${randomValue.toFixed(2)}%` : ''}
+                </span>
+            </div>
         </div>
     </div>
     <div class="token-right">
-        <span class="token-quantity">${round(token.amount,7)}</span>
-        <span class="token-total">~$${round((token.price * token.amount),2)}</span>
+        <span class="token-quantity">${round(token.amount, 7)}</span>
+        <span id="total-${token.symbol}" class="token-total">~$${round((token.price * token.amount), 2)}</span>
     </div>`;
 
     return tokenPanel;
 }
 
-// Функция для создания панели с наградами
 function createRewardsPanel(transaction) {
     const rewardPanel = document.createElement('div');
     rewardPanel.classList.add('rewards-panel');
@@ -161,12 +212,9 @@ function createRewardsPanel(transaction) {
       </div>
   </div>
 `;
-
-
     return rewardPanel;
 }
 
-// Переключение между вкладками
 const tabButtons = document.querySelectorAll(".tab-button");
 const withdrawButton = document.getElementById("withdraw-button");
 
@@ -272,7 +320,6 @@ function round(number, precision, minDecimals = 2) {
         ? rounded.toFixed(minDecimals)
         : rounded.toString();
 }
-
 
 
 let config = null;

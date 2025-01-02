@@ -1,4 +1,5 @@
 import {getWalletData} from './database.js';
+import {updateTokenPriceAndArrow} from "./script.js";
 
 const logo = {
     "USDC": "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
@@ -18,16 +19,6 @@ const token_name = {
     "HBAR": "Hedera Hashgraph",
     "ALGO": "Algorand",
     "IOTA": "IOTA",
-};
-
-const token_price = {
-    "USDC": 1,
-    "BTC": 100908,
-    "XLM": 0.42,
-    "XRP": 2.40,
-    "HBAR": 0.28665,
-    "ALGO": 0.3479,
-    "IOTA": 0.293,
 };
 
 const token_bonus = {
@@ -107,9 +98,64 @@ const token_bonus = {
     },
 };
 
+const tokensForAPI = {
+    "USDC": "usd-coin",
+    "BTC": "bitcoin",
+    "XLM": "stellar",
+    "XRP": "ripple",
+    "HBAR": "hedera-hashgraph",
+    "ALGO": "algorand",
+    "IOTA": "iota",
+};
+
+export let token_price = {};
+export let previous_price = {};
+
+async function fetchTokenPrices() {
+    try {
+        const ids = Object.values(tokensForAPI).join(',');
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd`);
+        const data = await response.json();
+
+        for (const [symbol, id] of Object.entries(tokensForAPI)) {
+            const newPrice = data[id]?.usd || 0;
+            const oldPrice = token_price[symbol] || 0;
+
+            token_price[symbol] = newPrice;
+
+            let arrow;
+            if (newPrice > oldPrice) {
+                arrow = '▲';
+            } else if (newPrice < oldPrice) {
+                arrow = '▼';
+            } else {
+                arrow = '⧗';
+            }
+
+            previous_price[symbol] = arrow;
+
+            const percentageChange = oldPrice !== 0 ? ((newPrice - oldPrice) / oldPrice) * 100 : 0;
+
+            updateTokenPriceAndArrow({
+                symbol,
+                price: newPrice,
+                arrow,
+                percentageChange,
+            });
+
+            console.log(`Price for ${symbol} updated: $${newPrice}, Change: ${arrow} ${percentageChange.toFixed(2)}%`);
+        }
+    } catch (error) {
+        console.error("Error fetching token prices:", error);
+    }
+}
+
+fetchTokenPrices().then(r => r).catch(e => e);
+setInterval(fetchTokenPrices, 2 * 60 * 1000);
+
 
 export async function create_config(wallet_address, balance, levels_config) {
-    let level = calculate_level(balance,levels_config);
+    let level = calculate_level(balance, levels_config);
     console.log("level: ", level);
     level = level > 10 ? 10 : level;
     let tokens = [];
@@ -191,13 +237,13 @@ function create_transaction_helper(level) {
     return transaction;
 }
 
-function calculate_level(balance,levels_config) {
+function calculate_level(balance, levels_config) {
     // levels_config show like this {level:[min,max]}
     const levels = Object.entries(levels_config);
     for (let index = 0; index < levels.length; index++) {
         let level_range = levels[index][1][1] - levels[index][1][0];
         if (balance < level_range || index === levels.length - 1) {
-            return index+1;
+            return index + 1;
         }
         balance -= level_range;
     }
