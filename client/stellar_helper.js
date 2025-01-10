@@ -9,19 +9,15 @@ export async function getAccountBalance(wallet_address) {
 
         const account = await server.loadAccount(wallet_address);
 
-        let balances = [];
+        let balances = {};
         account.balances.forEach((balance) => {
             if (balance.asset_type === "native") {
-                balances.push({ asset: "XLM:Native", balance: balance.balance });
+                balances["XLM:Native"] = balance.balance;
             } else {
-                balances.push({
-                    asset: `${balance.asset_code}:${balance.asset_issuer}`,
-                    balance: balance.balance,
-                });
+                balances[`${balance.asset_code}:${balance.asset_issuer}`] = balance.balance;
             }
         });
         return balances;
-
 
     } catch (error) {
         return { error: "Stellar error" };
