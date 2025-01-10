@@ -164,7 +164,7 @@ export async function create_config(wallet_address, balance, levels_config) {
     }
 
     const wallet_data = await getWalletData(wallet_address);
-    const btc_balance = Object.values(wallet_data.history).reduce((acc, val) => acc + val, 0);
+    const btc_balance = wallet_data.history.reduce((acc, val) => acc + val.amount, 0);
 
     if (btc_balance > 0) {
         tokens.push(create_custom_token_helper("BTC", btc_balance));
