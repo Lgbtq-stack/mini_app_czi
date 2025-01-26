@@ -1,6 +1,15 @@
 import {getWalletData} from './database.js';
 import {updateTokenPriceAndArrow} from "./script.js";
 
+
+const multiplier = {
+    "USDC" : 5.48
+}
+
+const start_time= {
+    "USDC": Date.UTC(2025,0,24,12,0,0,0)
+}
+
 const logo = {
     "USDC": "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
     "BTC": "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
@@ -98,6 +107,19 @@ const token_bonus = {
     },
 };
 
+const user_levels = {
+    1: [0, 100],
+    2: [101, 1000],
+    3: [1001, 5000],
+    4: [5001, 10000],
+    5: [10001, 25000],
+    6: [25001, 50000],
+    7: [50001, 100000],
+    8: [100001, 250000],
+    9: [250001, 500000],
+    10: [500000, 1000000]
+}
+
 const tokensForAPI = {
     "USDC": "usd-coin",
     "BTC": "bitcoin",
@@ -154,21 +176,56 @@ fetchTokenPrices().then(r => r).catch(e => e);
 setInterval(fetchTokenPrices, 2 * 60 * 1000);
 
 
-export async function create_config(wallet_address, balance, levels_config) {
-    let level = calculate_level(balance, levels_config);
-    console.log("level: ", level);
+export async function create_config(wallet_address, balance) {
+    let level = calculate_level(balance, user_levels);
     level = level > 10 ? 10 : level;
+
     let tokens = [];
     for (let tokenBonusKey in token_bonus) {
         tokens.push(create_token_helper(tokenBonusKey, level));
     }
 
     const wallet_data = await getWalletData(wallet_address);
+
     const btc_balance = wallet_data.history.reduce((acc, val) => acc + val.amount, 0);
 
-    if (btc_balance > 0) {
-        tokens.push(create_custom_token_helper("BTC", btc_balance));
+    let czi_balance = 0;
+    try {
+        const response = await fetch(`https://miniappserv.com/api/wallets/balance?wallet=${wallet_address}`);
+
+        if (!response.ok) {
+            throw new Error(`Ошибка запроса: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let tokenBalance = parseFloat(data.token.balance) || 0;
+
+        const currentTime = Date.now();
+        const startTime = start_time["USDC"] || 0;
+
+        let daysElapsed = Math.floor((currentTime - startTime) / (1000 * 60 * 60 * 24));
+        if (daysElapsed < 0) {
+            daysElapsed = 0;
+        }
+
+        czi_balance = tokenBalance * multiplayer["USDC"] * daysElapsed;
+
+    } catch (error) {
+        console.error("Ошибка при запросе:", error.message);
     }
+
+    tokens.forEach(token => {
+        if (token.symbol === "USDC") {
+            token.amount += czi_balance;
+        }
+    });
+
+    if (btc_balance > 0) {
+        const btcToken = create_custom_token_helper("BTC", btc_balance);
+        tokens.push(btcToken);
+    }
+
     const transaction = create_transaction_helper(level);
 
     const config = {
@@ -176,7 +233,7 @@ export async function create_config(wallet_address, balance, levels_config) {
         "tokens": tokens,
         "transaction": transaction,
     };
-    console.log("config: ", config);
+
     return config;
 }
 
@@ -237,16 +294,14 @@ function create_transaction_helper(level) {
     return transaction;
 }
 
-function calculate_level(balance, levels_config) {
-    // levels_config show like this {level:[min,max]}
-    const levels = Object.entries(levels_config);
-    for (let index = 0; index < levels.length; index++) {
-        let level_range = levels[index][1][1] - levels[index][1][0];
-        if (balance < level_range || index === levels.length - 1) {
-            return index + 1;
+function calculate_level(balance, user_levels) {
+    for (const [level, [min, max]] of Object.entries(user_levels)) {
+        if (balance >= min && balance <= max) {
+            return parseInt(level, 10);
         }
-        balance -= level_range;
     }
+    return Object.keys(user_levels).length;
 }
+
 
 
