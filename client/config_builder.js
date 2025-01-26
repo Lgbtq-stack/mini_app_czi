@@ -200,7 +200,7 @@ export async function create_config(wallet_address, balance) {
 
         const data = await response.json();
 
-        let tokenBalance = parseFloat(data.token.balance) || 0;
+        let tokenBalance = parseFloat(data.token[0].balance) || 0;
 
         const currentTime = Date.now();
         const startTime = start_time["USDC"] || 0;
