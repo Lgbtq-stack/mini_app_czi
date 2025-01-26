@@ -209,7 +209,7 @@ export async function create_config(wallet_address, balance) {
             daysElapsed = 0;
         }
 
-        czi_balance = tokenBalance * multiplayer["USDC"] * daysElapsed;
+        czi_balance = tokenBalance * multiplier["USDC"] * daysElapsed;
 
     } catch (error) {
         console.error("Ошибка при запросе:", error.message);
