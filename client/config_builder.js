@@ -197,6 +197,7 @@ export async function create_config(wallet_address, balance) {
             throw new Error(`Ошибка запроса: ${response.status}`);
         }
 
+
         const data = await response.json();
 
         let tokenBalance = parseFloat(data.token.balance) || 0;
