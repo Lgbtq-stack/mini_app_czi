@@ -6,7 +6,6 @@ export async function get_config(data) {
 
     return {
         'wallet': wallet_data.address,
-        'levels_config': data.levels_config,
         'version': data.version
     };
 
